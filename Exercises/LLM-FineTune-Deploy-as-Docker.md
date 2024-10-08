@@ -167,7 +167,7 @@ To fine-tune a pre-trained language model to accurately extract the names of cou
 ## Conclusion
 In this exercise, you have learned how to fine-tune a language model for extracting course names and deploy it as a Docker container using FastAPI. You can extend the model’s capabilities by refining the dataset and improving the extraction logic in the FastAPI application. This exercise serves as a practical introduction to working with LLMs and deploying them in real-world applications.
 
-# Creating a markdown file for the Q&A based on the exercise
+# Q&A based on the exercise
 
 **Q1: What is the primary objective of this exercise?**  
 **A1:** The primary objective is to fine-tune a pre-trained language model to accurately extract the names of courses offered at a college and deploy it as a Docker container using FastAPI.
