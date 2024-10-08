@@ -166,3 +166,35 @@ To fine-tune a pre-trained language model to accurately extract the names of cou
 
 ## Conclusion
 In this exercise, you have learned how to fine-tune a language model for extracting course names and deploy it as a Docker container using FastAPI. You can extend the model’s capabilities by refining the dataset and improving the extraction logic in the FastAPI application. This exercise serves as a practical introduction to working with LLMs and deploying them in real-world applications.
+
+# Creating a markdown file for the Q&A based on the exercise
+
+**Q1: What is the primary objective of this exercise?**  
+**A1:** The primary objective is to fine-tune a pre-trained language model to accurately extract the names of courses offered at a college and deploy it as a Docker container using FastAPI.
+
+**Q2: What libraries do we need to install to complete this exercise?**  
+**A2:** The required libraries include `transformers`, `torch`, `datasets`, `fastapi`, and `uvicorn`. 
+
+**Q3: What type of data do we use for fine-tuning the model?**  
+**A3:** We use a dataset that contains text samples of course names and corresponding labels indicating the course names.
+
+**Q4: How do we prepare the dataset for fine-tuning?**  
+**A4:** We create a pandas DataFrame with text samples and labels, then convert it into a Hugging Face dataset using `Dataset.from_pandas()`.
+
+**Q5: What function is used to tokenize the dataset?**  
+**A5:** The function `tokenize_function()` is used to tokenize the dataset by applying the tokenizer to each text sample, with padding and truncation.
+
+**Q6: Which pre-trained model is selected for this exercise?**  
+**A6:** The pre-trained model selected for token classification is `dbmdz/bert-large-cased-finetuned-conll03-english`.
+
+**Q7: What is the role of the FastAPI application in this exercise?**  
+**A7:** The FastAPI application serves as a web API that exposes an endpoint for course name extraction. It takes text input and returns the extracted course names.
+
+**Q8: How do we create the Docker container for our FastAPI application?**  
+**A8:** We create a Dockerfile that defines the base image, installs the required libraries, and specifies the command to run the FastAPI application. We then build the Docker image and run the container.
+
+**Q9: What command do we use to build the Docker image?**  
+**A9:** The command used to build the Docker image is:
+```bash
+docker build -t course-extraction-api .
+
