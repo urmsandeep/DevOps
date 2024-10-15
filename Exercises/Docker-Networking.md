@@ -74,32 +74,69 @@ Output:
 
 Create a `Dockerfile` for the Flask app:
 
+## Python code. Save this as app.py
+
+```
+from flask import Flask, jsonify
+
+app = Flask(__name__)
+
+@app.route('/about', methods=['GET'])
+def about():
+    return jsonify({
+        "name": "Simple REST API",
+        "version": "1.0",
+        "description": "This is a simple REST API built with Flask."
+    })
+
+if __name__ == '__main__':
+    app.run(debug=True, port=5001)  # Specify the port number here
+```
+
+## Requirements: Save this as requirements.txt
+```
+Flask==2.0.1
+```
+
 ## Dockerfile
 
 ```
-   FROM python:3.9-slim
-   WORKDIR /app
-   COPY requirements.txt .
-   RUN pip install -r requirements.txt
-   COPY . .
-   CMD ["flask", "run", "--host=0.0.0.0"]
+# Use the official Python image from the Docker Hub
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file and app code to the container
+COPY requirements.txt .
+COPY app.py .
+
+# Install Flask (and any other dependencies you might have)
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose the port the app runs on
+EXPOSE 5001
+
+# Define the command to run the application
+CMD ["python", "app.py"]
+
 ```
 
 ### Build the Flask image:
 
-**```docker build -t flask-app .```**
+**```docker build -t flask-api .```**
 
 Output:
 
 Sending build context to Docker daemon  3.584kB
 Step 1/5 : FROM python:3.9-slim
 
-## Launch the containers:
+## Launch the containers: (-d denotes dettach mode i.e. container runs in background)
 
 ```
     docker run -d --name mysql --net=my-bridge-net mysql:latest
     docker run -d --name redis --net=my-bridge-net redis:latest
-    docker run -d --name flask --net=my-bridge-net -p 5000:5000 flask-app
+    docker run -d --name flask --net=my-bridge-net -p 5001:5001 flask-api
 ```
 
 Output:
