@@ -33,9 +33,6 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
 ```
 
-Output:
-87c23b491f5994c74e497f4f4f4f4f4f4f4f4
-
 ### Task 2: Containerize the Flask Application Using a Dockerfile
 
 Create a *Dockerfile* to containerize the Flask application.
@@ -61,179 +58,112 @@ CMD ["python", "app.py"]
 
 ```
 
-Output:
+### Task 3: Create and Apply AppArmor Profile
 
-NETWORK ID     NAME           DRIVER    SCOPE
-87c23b491f59   my-bridge-net   bridge    local
-
-### Task 3: Inspect the Network*
-
-**```docker network inspect my-bridge-net```**
-
-Output:
-[
-    {
-        "Name": "my-bridge-net",
-        "Id": "87c23b491f5994c74e497f4f4f4f4f4f4f4f4",
-        "Created": "2023-02-20T14:30:45.421654Z",
-        "Scope": "local",
-        "Driver": "bridge",
-        "EnableIPv6": false,
-        "IPAM": {
-            "Driver": "default",
-            "Options": {},
-            "Config": [
-                {
-                    "Subnet": "172.18.0.0/16",
-                    "Gateway": "172.18.0.1"
-                }
-            ]
-        },
-        "Internal": false,
-        "Attachable": false,
-        "Ingress": false,
-        "ConfigFrom": {
-            "Network": ""
-        },
-        "ConfigOnly": false,
-        "Containers": {},
-        "Options": {},
-        "Labels": {}
-    }
-]
-
-### Task 4: Launch Containers
-
-Create a `Dockerfile` for the Flask app:
-
-## Python code. Save this as app.py
+Create an AppArmor profile that restricts access to sensitive directories and prevents the execution of certain binaries.
 
 ```
-from flask import Flask, jsonify
+#include <tunables/global>
 
-app = Flask(__name__)
+/usr/bin/python3 {
+    # Deny access to sensitive system files
+    deny /etc/** r,
+    deny /var/** rw,
 
-@app.route('/about', methods=['GET'])
-def about():
-    return jsonify({
-        "name": "Simple REST API",
-        "version": "1.0",
-        "description": "This is a simple REST API built with Flask."
-    })
+    # Allow Flask app to bind to port 5000
+    network inet stream,
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5001)  # Specify the port number here
-```
+    # Permissions to the application directory
+    /app/** rwk,
 
-## Requirements: Save this as requirements.txt
-```
-Flask==2.0.1
-```
+    # Deny execution of any binaries in /bin or /usr/bin
+    deny /bin/** rmix,
+    deny /usr/bin/** rmix,
 
-## Dockerfile
-
-```
-# Use the official Python image from the Docker Hub
-FROM python:3.9-slim
-
-# Set the working directory in the container
-WORKDIR /app
-
-# Copy the requirements file and app code to the container
-COPY requirements.txt .
-COPY app.py .
-
-# Install Flask (and any other dependencies you might have)
-RUN pip install --no-cache-dir -r requirements.txt
-
-# Expose the port the app runs on
-EXPOSE 5001
-
-# Define the command to run the application
-CMD ["python", "app.py"]
+    # Capability restrictions
+    capability net_bind_service,
+    deny capability sys_admin,
+}
 
 ```
-
-### Build the Flask image:
-
-**```docker build -t flask-api .```**
-
-Output:
-
-Sending build context to Docker daemon  3.584kB
-Step 1/5 : FROM python:3.9-slim
-
-## Launch the containers: (-d denotes dettach mode i.e. container runs in background)
+Apply the AppArmor profile when starting the container:
 
 ```
-    docker run -d --name mysql --net=my-bridge-net mysql:latest
-    docker run -d --name redis --net=my-bridge-net redis:latest
-    docker run -d --name flask --net=my-bridge-net -p 5001:5001 flask-api
+docker run --security-opt="apparmor=my-apparmor-profile" -p 5000:5000 web-server
 ```
 
-Output:
+### Task 4: Use Docker SDK for Python to Apply AppArmor Profile
+Write a Python script using the Docker SDK to apply the AppArmor profile to the Flask container.
 
-mysql container ID: 237c941f4f4f
-redis container ID: 456c941f4f4f
-flask container ID: 678c941f4f4f
-
-
-### Task 5: Test Connectivity
-
-Exec into the Flask container:
+Python Script (apply_apparmor.py):
 
 ```
-docker exec -it flask bash
+import docker
+
+# Create a Docker client
+client = docker.from_env()
+
+# Build the Docker image
+client.images.build(path=".", tag="flask-apparmor")
+
+# Run the container with the AppArmor profile
+container = client.containers.run(
+    "flask-apparmor",
+    ports={'5000/tcp': 5000},
+    security_opt=["apparmor=my-apparmor-profile"],
+    detach=True
+)
+
+print(f"Container started: {container.short_id}")
+
+# Verify AppArmor profile applied
+container_info = client.api.inspect_container(container.id)
+apparmor_profile = container_info['HostConfig']['SecurityOpt']
+
+print(f"AppArmor profile applied: {apparmor_profile}")
+
+# Stop the container
+container.stop()
 ```
 
-Ping the MySQL container:
+### Task 5: Test Restricted Actions
+
+Write a Python script to test restricted actions such as accessing /etc/passwd or executing /bin/bash in the container.
+
+Python Script (test_restricted_actions.py):
 
 ```
-ping mysql
+import docker
+
+# Create a Docker client
+client = docker.from_env()
+
+# Run the container with the AppArmor profile
+container = client.containers.run(
+    "flask-apparmor",
+    ports={'5000/tcp': 5000},
+    security_opt=["apparmor=my-apparmor-profile"],
+    detach=True
+)
+
+# Test restricted actions
+exit_code, output = container.exec_run("cat /etc/passwd")
+print(f"Attempt to read /etc/passwd: Exit Code {exit_code}, Output: {output.decode()}")
+
+exit_code, output = container.exec_run("/bin/bash")
+print(f"Attempt to execute /bin/bash: Exit Code {exit_code}, Output: {output.decode()}")
+
+# Stop the container
+container.stop()
 ```
-
-Output:
-
-PING mysql (172.18.0.2) 56(84) bytes of data.
-64 bytes from mysql (172.18.0.2): icmp_seq=1 ttl=64 time=0.078 ms
-
-
-# Ping the Redis container:
-
-```
-ping redis
-```
-
-Output:
-
-PING redis (172.18.0.3) 56(84) bytes of data.
-64 bytes from redis (172.18.0.3): icmp_seq=1 ttl=64 time=0.078 ms
-
-### Task 6: Clean up
-
-Stop and remove containers:
-
-```
-docker stop mysql redis flask && docker rm mysql redis flask
-```
-
-# Remove the network
-
-```
-docker network rm my-bridge-net
-```
-
-Output:
-
-my-bridge-net
 
 ### Questions:
 
-1. What is the purpose of the --net flag in docker run?
-2. How do containers communicate with each other on the same network?
-3. What is the difference between a bridge network and a host network?
-4. How can you expose a container's port to the host machine?
-
+1. What is the purpose of using AppArmor with Docker containers?
+2. How do AppArmor profiles help secure a Docker container?
+3. Why is it important to restrict access to sensitive directories such as /etc/ and /var/?
+4. What other capabilities can you restrict using AppArmor profiles?
+5. How can you verify if an AppArmor profile is successfully applied to a Docker container?
 
 ### Answers:
 
