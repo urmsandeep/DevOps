@@ -14,6 +14,18 @@ and prevent unauthorized actions such as executing binaries or accessing restric
 The Python Flask application is containerized, and Docker's SDK will be used to apply and verify 
 the AppArmor profiles. Finally, you will test restricted actions in the container using Python scripts.
 
+## Pre-requisites
+
+Steps to Install and Use apparmor_parser:
+Install AppArmor Utilities: On most Linux distributions, you can install apparmor_parser as part of the apparmor-utils package. To install it, run:
+
+For Ubuntu/Debian-based distributions:
+
+```
+sudo apt-get update
+sudo apt-get install apparmor-utils
+```
+
 ## Tasks
 
 
