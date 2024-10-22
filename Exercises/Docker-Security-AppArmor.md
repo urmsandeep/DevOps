@@ -274,9 +274,12 @@ Container stopped
 
 ### Answers:
 
-1. The --net flag specifies the network to connect the container to.
-2. Containers communicate using their container names or IP addresses.
-3. A bridge network provides isolation between containers, while a host network shares the host's network stack. Think of it like:
-- Bridge Network: Containers are in a private room, talking to each other through a door.
-- Host Network: Containers are in the same room as the host, talking directly to everyone.
-4. Use the -p flag to expose a container's port (e.g., `-p 500")
+1 What is the purpose of using AppArmor with Docker containers? AppArmor is used to enforce security policies and confine applications to a limited set of resources. With Docker containers, it helps to limit access to system resources, files, and networks, thus providing an additional layer of security.
+
+2. How do AppArmor profiles help secure a Docker container? AppArmor profiles define what a containerized application can or cannot do. They restrict access to sensitive directories, network capabilities, file execution, and system calls, ensuring the container behaves securely without affecting the host system.
+
+3. Why is it important to restrict access to sensitive directories such as /etc/ and /var/? Sensitive directories like /etc/ contain configuration files and sensitive information such as user data and system settings. Restricting access prevents the container from reading or modifying important system files, reducing the risk of security breaches.
+
+4. What other capabilities can you restrict using AppArmor profiles? AppArmor can restrict a container's ability to access the network, bind to specific ports, execute binaries, write to specific directories, and use system administration capabilities (cap_sys_admin).
+
+5. How can you verify if an AppArmor profile is successfully applied to a Docker container? You can verify if an AppArmor profile is applied by inspecting the container using the Docker SDK or the Docker CLI. The HostConfig.SecurityOpt field will show the applied security options, including the AppArmor profile name.
