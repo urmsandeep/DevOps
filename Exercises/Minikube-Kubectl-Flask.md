@@ -85,7 +85,7 @@ To verify that the deployment was created successfully and check the number of r
 ```
 kubectl get deployments
 ```
-Expected Output: You should see your flask-app deployment with its current status and number of replicas.
+Output: You should see your flask-app deployment with its current status and number of replicas.
 ```
 NAME         READY   UP-TO-DATE   AVAILABLE   AGE
 flask-app    1/1     1            1           5s
@@ -95,7 +95,7 @@ To check if the deployment created the expected pods:
 ```
 kubectl get pods -l app=flask-app
 ```
-Expected Output: The output will list the pods created by the flask-app deployment. Ensure the STATUS shows Running.
+Output: The output will list the pods created by the flask-app deployment. Ensure the STATUS shows Running.
 
 ```
 NAME                          READY   STATUS    RESTARTS   AGE
@@ -127,5 +127,13 @@ This will show the flask-service if created, with details like the service type
 ```
 kubectl get services
 ```
+# Q&A based on the exercise   
+**Q1: What command is used to expose a service in Kubernetes?**   
+**A1:** kubectl expose or kubectl apply -f <service.yaml> is used to expose a service in Kubernetes.
 
+**Q2: How does Minikube help in local Kubernetes testing?**  
+**A2:** Minikube runs a single-node Kubernetes cluster locally, making it easier to test deployments without needing a full Kubernetes environment.
+
+**Q3: What is the role of kubectl in this setup?**
+**A3:** kubectl is the Kubernetes CLI tool used to interact with the Kubernetes cluster. It allows you to deploy applications, scale them, and manage resources.
 
