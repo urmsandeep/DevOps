@@ -5,6 +5,8 @@ Learn Kubernetes basics using Minikube to set up a single-node cluster and deplo
 This exercise involves deploying a Flask app using minikube.
 
 ## Prerequisites
+- The Illustrated Children’s Guide to Kubernetes
+https://www.cncf.io/phippy/the-childrens-illustrated-guide-to-kubernetes/
 - Install Minikube https://minikube.sigs.k8s.io/docs/
 - Follow the Minikube installation guide for your operating system (Windows/Linux/MacOS).
 - **Watch:** Origins of Kubernetes with Tim Hockin of Google https://www.youtube.com/watch?v=xSztxKexDXM
