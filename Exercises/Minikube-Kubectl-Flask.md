@@ -8,6 +8,8 @@ This exercise involves deploying a Flask app using minikube.
 - Install Minikube https://minikube.sigs.k8s.io/docs/
 - Follow the Minikube installation guide for your operating system (Windows/Linux/MacOS).
 - **Watch:** Origins of Kubernetes with Tim Hockin of Google https://www.youtube.com/watch?v=xSztxKexDXM
+- **Watch:** Keynote: A Vision for Vision - Kubernetes in Its Second Decade - Tim Hockin https://www.youtube.com/watch?v=WqeShpaztZY
+
 
 ## Step 1: Start minkube
 ```
