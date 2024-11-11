@@ -170,6 +170,48 @@ flask-app-rs-rbwr4   1/1     Running   0          10m     10.244.0.7    minikube
 flask-app-rs-wfbb4   1/1     Running   0          2m54s   10.244.0.10   minikube   <none>           <none>
 ```
 
+# Q&A based on the exercise
+
+
+**Q1. What is the initial number of replicas in the ReplicaSet?**
+
+Answer: 3
+
+**Q2. How many pods are running after applying the ReplicaSet configuration?**
+
+Answer: 3
+
+**3. What happens when you scale the ReplicaSet to 5 replicas?**
+
+Answer: Kubernetes creates 2 additional pods to meet the desired number of replicas (5). The ReplicaSet now has 5 running pods.
+
+**4. What happens when you delete one pod?**
+
+Answer: Kubernetes automatically creates a new pod to replace the deleted one, maintaining the desired number of replicas (5).
+
+**5. How does Kubernetes maintain the desired number of replicas?**
+
+Answer: Kubernetes continuously monitors the number of running pods and compares it to the desired number of replicas. If there's a discrepancy, Kubernetes creates or deletes pods to maintain the desired state.
+
+**6. How many nodes are running?**
+
+Answer: 1
+
+**7. Where are the pods running with respect to nodes?**
+
+Answer:
+
+Node 1:
+
+- Pod 1 (flask-app-<id>)
+- Pod 2 (flask-app-<id>)
+- Pod 3 (flask-app-<id>)
+- Pod 4 (flask-app-<id>)
+- Pod 5 (flask-app-<id>)
+
+All 5 pods are running on the single node.
+
+
 ## Additional Challenges:
 
 - Update the replicaset.yaml file to use a different image.
