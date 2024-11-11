@@ -84,60 +84,99 @@ Output
 replicaset.apps/flask-app-rs created
 ```
 
-## Step 5: Verify the ReplicaSet:
+## Step 5: Initialize minikube, build Imange and Verify the ReplicaSet:
 
 ```
-kubectl get rs
-
-NAME           DESIRED   CURRENT   READY   AGE
-flask-app-rs   3         3         0       40s
+minikube docker-env
+eval $(minikube docker-env)
+docker build -t flask-app .
 ```
 
 ## Step 6: Verify the pods:
 
 ```
 kubectl get pods
+
+NAME                 READY   STATUS    RESTARTS   AGE
+flask-app-rs-4nr6q   1/1     Running   0          3m35s
+flask-app-rs-84v7x   1/1     Running   0          3m35s
+flask-app-rs-rbwr4   1/1     Running   0          3m35s
+
+kubectl get rs
+
+NAME           DESIRED   CURRENT   READY   AGE
+flask-app-rs   3         3         0       40s
 ```
 
 ## Step 7: Scale the ReplicaSet to 5 replicas:
 
 ```
 kubectl scale rs flask-app-rs --replicas=5
+
+replicaset.apps/flask-app-rs scaled
 ```
 
 ## Step 8: Verify the updated ReplicaSet:
 
 ```
 kubectl get rs
+
+NAME           DESIRED   CURRENT   READY   AGE
+flask-app-rs   5         5         5       7m38s
 ```
 
 ## Step 9: Verify the updated pods:
 
 ```
 kubectl get pods
+
+NAME                 READY   STATUS    RESTARTS   AGE
+flask-app-rs-4nr6q   1/1     Running   0          7m55s
+flask-app-rs-84v7x   1/1     Running   0          7m55s
+flask-app-rs-nsmlx   1/1     Running   0          32s
+flask-app-rs-rbwr4   1/1     Running   0          7m55s
+flask-app-rs-wfbb4   1/1     Running   0          32s
 ```
 
 ## Step 10: Delete one pod:
+Command to delete a pod: kubectl delete pod <pod-name>
 
 ```
-kubectl delete pod <pod-name>
+kubectl delete pod flask-app-rs-84v7x
+pod "flask-app-rs-84v7x" deleted
 ```
 
 ## Step 11: Verify the pods:
 
 ```
 kubectl get pods
+
+NAME                 READY   STATUS    RESTARTS   AGE
+flask-app-rs-4nr6q   1/1     Running   0          9m19s
+flask-app-rs-hqtm7   1/1     Running   0          51s
+flask-app-rs-nsmlx   1/1     Running   0          116s
+flask-app-rs-rbwr4   1/1     Running   0          9m19s
+flask-app-rs-wfbb4   1/1     Running   0          116s
 ```
 
+View pod distribution across nodes
+```
+kubectl get pods -o wide
+NAME                 READY   STATUS    RESTARTS   AGE     IP            NODE       NOMINATED NODE   READINESS GATES
+flask-app-rs-4nr6q   1/1     Running   0          10m     10.244.0.9    minikube   <none>           <none>
+flask-app-rs-hqtm7   1/1     Running   0          109s    10.244.0.12   minikube   <none>           <none>
+flask-app-rs-nsmlx   1/1     Running   0          2m54s   10.244.0.11   minikube   <none>           <none>
+flask-app-rs-rbwr4   1/1     Running   0          10m     10.244.0.7    minikube   <none>           <none>
+flask-app-rs-wfbb4   1/1     Running   0          2m54s   10.244.0.10   minikube   <none>           <none>
+```
 
-
-Additional Challenges:
+## Additional Challenges:
 
 - Update the replicaset.yaml file to use a different image.
 - Create a Deployment instead of a ReplicaSet.
 - Use kubectl describe to inspect the ReplicaSet and pods.
 
-Tips and Variations:
+## Tips and Variations:
 
 - Use kubectl get pods -o wide to see pod distribution across nodes.
 - Use kubectl logs to view pod logs.
