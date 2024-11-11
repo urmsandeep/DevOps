@@ -19,6 +19,34 @@ minikube delete
 minikube start --nodes=1
 ```
 
+**Output**
+
+```
+😄  minikube v1.34.0 on Ubuntu 24.04 (amd64)
+    ▪ MINIKUBE_ACTIVE_DOCKERD=minikube
+✨  Automatically selected the docker driver
+📌  Using Docker driver with root privileges
+👍  Starting "minikube" primary control-plane node in "minikube" cluster
+🚜  Pulling base image v0.0.45 ...
+🔥  Creating docker container (CPUs=2, Memory=2400MB) ...
+🐳  Preparing Kubernetes v1.31.0 on Docker 27.2.0 ...
+    ▪ Generating certificates and keys ...
+    ▪ Booting up control plane ...
+    ▪ Configuring RBAC rules ...
+🔗  Configuring bridge CNI (Container Networking Interface) ...
+🔎  Verifying Kubernetes components...
+    ▪ Using image gcr.io/k8s-minikube/storage-provisioner:v5
+🌟  Enabled addons: storage-provisioner, default-storageclass
+🏄  Done! kubectl is now configured to use "minikube" cluster and "default" namespace by default
+```
+
+Check nodes
+```
+kubectl get nodes
+NAME       STATUS   ROLES           AGE   VERSION
+minikube   Ready    control-plane   42s   v1.31.0
+```
+
 ## Step 3: Create a new file replicaset.yaml with the following content:
 
 File Name: replicaset.yaml 
@@ -51,10 +79,18 @@ spec:
 kubectl apply -f replicaset.yaml
 ```
 
+Output
+```
+replicaset.apps/flask-app-rs created
+```
+
 ## Step 5: Verify the ReplicaSet:
 
 ```
 kubectl get rs
+
+NAME           DESIRED   CURRENT   READY   AGE
+flask-app-rs   3         3         0       40s
 ```
 
 ## Step 6: Verify the pods:
