@@ -326,10 +326,3 @@ Replace `<minikube_ip>` and `<node_port>` with the IP and port for each respecti
 In this exercise, we deployed two Python applications (Product Catalog and Shopping Cart) on a multi-node Minikube cluster
 with ReplicaSets, ensuring each pod is running on a different node. 
 This setup maximizes availability and fault tolerance across the cluster.
-
----
-
-## Summary
-
-In this exercise, we deployed two Python applications (Product Catalog and Shopping Cart) on a multi-node Minikube cluster with ReplicaSets,
-ensuring each pod is running on a different node. This setup maximizes availability and fault tolerance across the cluster.
