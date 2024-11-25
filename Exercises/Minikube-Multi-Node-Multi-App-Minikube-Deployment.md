@@ -155,6 +155,7 @@ spec:
       containers:
       - name: product-catalog-container
         image: product-catalog:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 80
 ```
@@ -188,6 +189,7 @@ spec:
       containers:
       - name: shopping-cart-container
         image: shopping-cart:latest
+        imagePullPolicy: Never
         ports:
         - containerPort: 80
 ```
