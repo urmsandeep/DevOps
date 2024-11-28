@@ -57,7 +57,7 @@ def home():
     return "Hello from Flask on Kubernetes!"
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+    app.run(host='0.0.0.0', port=15000)
 ```
 
 ## Step 3: Create a Dockerfile for Flask Application:
@@ -67,7 +67,6 @@ FROM python:3.8-slim
 WORKDIR /app
 COPY . /app
 RUN pip install flask
-EXPOSE 5000
 CMD ["python", "app.py"]
 ```
 
@@ -320,7 +319,6 @@ curl http://127.0.0.1:36157
 Hello from Flask on Kubernetes!
 ```
 The Flask application is now accessible !!
-
 
 # Q&A based on the exercise   
 
