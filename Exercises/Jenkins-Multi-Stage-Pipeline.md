@@ -68,6 +68,8 @@ Push the repository to your GitHub.
 git init
 git add .
 git commit -m "Initial commit"
+git remote add origin https://github.com/<your-GitHub-username>/devops-sample-code.git
+git push -u origin main
 ```
 
 ### Step 4: Create a Multistage Jenkins Pipeline
@@ -143,6 +145,103 @@ Test Stage:
 - The unittest framework runs the test cases and ensures they pass.
 Deploy Stage:
 - The application file (app.py) is copied to /tmp/python-app-deploy.
+
+Multi-stage successfully runs as follows:
+```
+Started by user admin
+Obtained Jenkinsfile from git https://github.com/urmsandeep/devops-sample-code.git
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/jenkins_home/workspace/Python-MultiStage-Pipeline
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+Selected Git installation does not exist. Using Default
+The recommended git tool is: NONE
+No credentials specified
+ > git rev-parse --resolve-git-dir /var/jenkins_home/workspace/Python-MultiStage-Pipeline/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/urmsandeep/devops-sample-code.git # timeout=10
+Fetching upstream changes from https://github.com/urmsandeep/devops-sample-code.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.39.5'
+ > git fetch --tags --force --progress -- https://github.com/urmsandeep/devops-sample-code.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/main^{commit} # timeout=10
+Checking out Revision f82e59e16ad6e72100e54d776df07dd26edf80de (refs/remotes/origin/main)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f f82e59e16ad6e72100e54d776df07dd26edf80de # timeout=10
+Commit message: "Updated Jenkinsfile"
+ > git rev-list --no-walk 7733cb39ce899622faf875a95ee6a5b39effa66c # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Build)
+[Pipeline] echo
+Creating virtual environment and installing dependencies...
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test)
+[Pipeline] echo
+Running tests...
+[Pipeline] sh
++ python3 -m unittest discover -s .
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+OK
+Hello, Jenkins Multi-Stage Pipeline!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Deploy)
+[Pipeline] echo
+Deploying application...
+[Pipeline] sh
++ mkdir -p /var/jenkins_home/workspace/Python-MultiStage-Pipeline/python-app-deploy
++ cp /var/jenkins_home/workspace/Python-MultiStage-Pipeline/app.py /var/jenkins_home/workspace/Python-MultiStage-Pipeline/python-app-deploy/
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Run Application)
+[Pipeline] echo
+Running application...
+[Pipeline] sh
++ echo 5064
++ nohup python3 /var/jenkins_home/workspace/Python-MultiStage-Pipeline/python-app-deploy/app.py
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Test Application)
+[Pipeline] echo
+Testing application...
+[Pipeline] sh
++ python3 /var/jenkins_home/workspace/Python-MultiStage-Pipeline/test_app.py
+.
+----------------------------------------------------------------------
+Ran 1 test in 0.004s
+
+OK
+Hello, Jenkins Multi-Stage Pipeline!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (Declarative: Post Actions)
+[Pipeline] echo
+Pipeline completed successfully!
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+Finished: SUCCESS
+```
 
 ### Additional Enhancements
 Add a Code Quality Analysis stage using tools like flake8 or pylint.
