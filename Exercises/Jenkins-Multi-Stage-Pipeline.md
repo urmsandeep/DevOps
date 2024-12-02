@@ -155,6 +155,34 @@ Click Build Now to start the pipeline.
 Observe the stages (Build, Test, Deploy) as they execute.
 Check the console output for logs and results.
 
+### Step 8: Handling build errors
+When you run the Jenkins job, you will run into build errors in the pipeline, specifically around
+missing python3, pip and other dependencies. To resolve this, directly log into the Jenkins docker
+using the command:
+
+```
+docker ps -a
+CONTAINER ID   IMAGE                    COMMAND                  CREATED        STATUS                    PORTS
+                                                                                                                NAMES
+78a4587c55da   jenkins/jenkins:lts      "/usr/bin/tini -- /u…"   8 hours ago    Up 8 hours                0.0.0.0:8080->8080/tcp, :::8080->8080/tcp, 0.0.0.0:50000->50000/tcp, :::50000->50000/tcp             
+```
+Then connect into the docker using:
+```
+docker exec -it -u root <container-id> bash
+```
+This will take into the shell of the docker instance and run commands listed below inside the container shell
+
+```
+root@78a4587c55da:/#
+
+apt-get update
+apt install python3
+apt install pip
+apt install python3.11-venv
+apt install python3-flask
+python3 -m unittest discover -s .
+```
+
 ### Expected Outcome
 Build Stage:
 - The pip install -r requirements.txt command installs Flask and other dependencies.
