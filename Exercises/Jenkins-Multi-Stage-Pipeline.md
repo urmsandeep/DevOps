@@ -56,6 +56,7 @@ class TestApp(unittest.TestCase):
     def test_home(self):
         tester = app.test_client()
         response = tester.get("/")
+        print(response.data.decode("utf-8"))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data.decode("utf-8"), "Hello, Jenkins Multi-Stage Pipeline!")
 
@@ -87,22 +88,38 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Installing dependencies...'
-                sh 'pip install -r requirements.txt'
+                echo 'Creating virtual environment and installing dependencies...'
             }
         }
         stage('Test') {
             steps {
                 echo 'Running tests...'
-                sh 'python -m unittest discover -s .'
+                sh 'python3 -m unittest discover -s .'
             }
         }
         stage('Deploy') {
             steps {
                 echo 'Deploying application...'
                 sh '''
-                mkdir -p /tmp/python-app-deploy
-                cp app.py /tmp/python-app-deploy/
+                mkdir -p ${WORKSPACE}/python-app-deploy
+                cp ${WORKSPACE}/app.py ${WORKSPACE}/python-app-deploy/
+                '''
+            }
+        }
+        stage('Run Application') {
+            steps {
+                echo 'Running application...'
+                sh '''
+                nohup python3 ${WORKSPACE}/python-app-deploy/app.py > ${WORKSPACE}/python-app-deploy/app.log 2>&1 &
+                echo $! > ${WORKSPACE}/python-app-deploy/app.pid
+                '''
+            }
+        }
+        stage('Test Application') {
+            steps {
+                echo 'Testing application...'
+                sh '''
+                python3 ${WORKSPACE}/test_app.py
                 '''
             }
         }
