@@ -90,10 +90,20 @@ git remote add origin https://github.com/<your-GitHub-username>/devops-sample-co
 ```
 git push -u origin main
 ```
-If your repository uses master as the default branch:
-```
-git push -u origin master
-```
+It will prompt for your GitHub username and Personal Access Token (PAT) that you had created in Step 1(b)
+
+Username for 'https://github.com': <your-GitHub-account>
+Password for 'https://<your-GitHub-account>@github.com': <Copy/paste the PAT token than you had created>
+Enumerating objects: 4, done.
+Counting objects: 100% (4/4), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 306 bytes | 30.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+To https://github.com/urmsandeep/devops-sample-code.git
+   4be1c56..1b647f7  main -> main
+branch 'main' set up to track 'origin/main'.
+
 ### (7) Verify the Script on GitHub
 1. Go to your GitHub repository URL: https://github.com/<your-GitHub-username>/DevOps.
 2. Navigate to the hello-world.sh file under your repository structure.
