@@ -1,6 +1,11 @@
 # Creating "Hello World" Jenkins Job
 
-Follow these steps to create and configure first Jenkins job in Jenkins.
+## Pre-requisite: Ensure Jenkins is running
+Refer to this page:
+
+https://github.com/urmsandeep/DevOps/blob/main/Exercises/Jenkins-CI-Automation.md#getting-started-with-jenkins
+
+Once you have Jenkins running, follow these steps to create and configure first Jenkins job in Jenkins.
 
 ---
 
