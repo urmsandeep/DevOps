@@ -108,17 +108,6 @@ branch 'main' set up to track 'origin/main'.
 1. Go to your GitHub repository URL: https://github.com/<your-GitHub-username>/DevOps.
 2. Navigate to the hello-world.sh file under your repository structure.
 
-
-
-
-
-
-
-
-
-
-
-
 ## Pre-requisite: Ensure Jenkins is running
 Refer to this page:
 
@@ -153,21 +142,19 @@ Once you have Jenkins running, follow these steps to create and configure first 
 Select Git under Source Code Management.
 Enter the repository URL: https://github.com/<your-username>/repo.git
 
-### Build Triggers
-To schedule builds, enable "Build periodically" and use cron syntax. Example cron syntax:
-H * * * *
-This will trigger the job once every hour.
-
 ### Build Steps
 Under Build, click Add build step → Execute shell.
 Add the following shell script
 ```
-echo "Hello, Jenkins!"
+sh hello-world.sh
 ```
-
 ### Step 4: Save and Run the Job
 Click Save to save your job configuration.
 On the job page, click Build Now to run the job.
+
+### Build Triggers
+To trigger build click on Jenkins Dashboard -> HelloWorld -> Build Now
+This will trigger the build job.
 
 #### Step 5: View the Build Output
 Navigate to the Build History section on the left-hand side of the job page.
