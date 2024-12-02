@@ -1,4 +1,83 @@
-# Creating "Hello World" Jenkins Job
+## Creating "Hello World" Jenkins Job
+
+### Step 1: Create a file (hello-world.sh) in your GitHub account.
+Here’s how you can create the hello-world.sh script and add it to a GitHub repository.
+
+#### (1)  Create a New GitHub Repository
+1. Log in to your GitHub account.
+2. Click the + icon (top-right) → New Repository.
+3. Fill in the repository details:
+4. Repository Name: **devops-sample-code**
+5. Description: A demo repository for Jenkins scripting.
+6. Visibility: **Public** keep it public
+7. Click Create Repository.
+
+#### (2) Create the Script Locally
+1. Open a terminal on your laptop or system
+2. Create a new file named hello-world.sh:
+```
+touch hello-world.sh
+```
+3. Edit the file (using vim, vss or notepad) and add the following content:
+```
+#!/bin/bash
+echo "Hello, Jenkins!"
+```
+4. Make the script executable
+chmod +x hello-world.sh
+
+#### (3)  Initialize a Local Git Repository
+If this is your first time using Git locally, configure it and initialize the new repository.
+```
+git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"
+git init
+```
+#### (4) Add the Script to the Repository
+
+1. Add the script to the repository:
+```
+git add hello-world.sh
+```
+2. Commit the changes:
+```
+git commit -m "Add hello-world.sh"
+```
+
+### (5) Link the Local Repository to GitHub
+1. Copy the remote URL of the GitHub repository you created. It will look like this:
+```
+https://github.com/<your-github-username>/DevOps.git
+```
+
+2. Link the local repository to the GitHub repository:
+```
+git remote add origin https://github.com/<your-GitHub-username>/DevOps.git
+```
+
+### (6) Push the Script to GitHub
+1. Push the changes to the remote repository:
+```
+git push -u origin main
+```
+If your repository uses main as the default branch:
+```
+git push -u origin main
+```
+### (7) Verify the Script on GitHub
+1. Go to your GitHub repository URL: https://github.com/<your-GitHub-username>/DevOps.
+2. Navigate to the hello-world.sh file under your repository structure.
+
+
+
+
+
+
+
+
+
+
+
 
 ## Pre-requisite: Ensure Jenkins is running
 Refer to this page:
