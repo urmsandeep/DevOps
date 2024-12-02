@@ -174,13 +174,12 @@ minikube -p devops-multinode image load shopping-cart:latest
 Verify if the images are sucessfully loaded into the registry using
 
 ```
-minikube -p devops-multinode image load product-catalog:latest
+minikube -p devops-multinode ssh -- docker images
 ````
 
 The output of the command should list product-catalog and shopping-cart images
 
 ```
-minikube -p devops-multinode ssh -- docker images
 REPOSITORY                                TAG                  IMAGE ID       CREATED          SIZE
 shopping-cart                             latest               cdfedc6f31ff   17 minutes ago   137MB
 product-catalog                           latest               2e47c49941d7   18 minutes ago   137MB
@@ -339,12 +338,13 @@ kubectl get pods -o wide
 Once the deployment is applied sucessfully, we should see these pods running.
 
 ```
-NAME                               READY   STATUS    RESTARTS   AGE
-product-catalog-5fdfc7f5fb-5rrrc   1/1     Running   0          24m
-product-catalog-5fdfc7f5fb-64hrw   1/1     Running   0          24m
-shopping-cart-788c48675b-8z7mc     1/1     Running   0          8s
-shopping-cart-788c48675b-hpvz8     1/1     Running   0          8s
-shopping-cart-788c48675b-m4ctl     1/1     Running   0          9s
+kubectl get pods -o wide
+NAME                               READY   STATUS    RESTARTS   AGE   IP           NODE                   NOMINATED NODE   READINESS GATES
+product-catalog-5fdfc7f5fb-2jlnv   1/1     Running   0          29s   10.244.1.3   devops-multinode-m02   <none>           <none>
+product-catalog-5fdfc7f5fb-7v556   1/1     Running   0          29s   10.244.2.4   devops-multinode-m03   <none>           <none>
+shopping-cart-788c48675b-7l4lx     1/1     Running   0          25s   10.244.0.4   devops-multinode       <none>           <none>
+shopping-cart-788c48675b-d48w2     1/1     Running   0          25s   10.244.1.4   devops-multinode-m02   <none>           <none>
+shopping-cart-788c48675b-hml9r     1/1     Running   0          25s   10.244.2.5   devops-multinode-m03   <none>           <none>
 ```
 
 Each pod for Product Catalog and Shopping Cart should be running on different nodes.
